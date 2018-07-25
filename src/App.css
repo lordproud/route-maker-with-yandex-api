@@ -1,0 +1,37 @@
+.App {
+  text-align: center;
+  position: relative;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 50px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.App-map {
+  margin: 0 auto;
+}
+
+.App-search-bar {
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.search-list {
+  float: right;
+}
