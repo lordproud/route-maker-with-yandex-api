@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import searchReducer from './searchReducer';
+import pointsReducer from './pointsReducer';
 
 export default combineReducers({
-  item: searchReducer,
+  points: pointsReducer,
 });

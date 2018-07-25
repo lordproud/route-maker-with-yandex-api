@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getItems } from '../actions/searchActions';
+import { getItems } from '../actions/pointsActions';
 
 class List extends Component {
   render() {
@@ -8,9 +8,9 @@ class List extends Component {
     return (
       <div className="search-list">
         <ul>
-          {items.length > 0
+          {/* {items.length > 0
             ? items.map(({ id, name }) => <li key={id}>{name}</li>)
-            : ''}
+            : ''} */}
         </ul>
       </div>
     );
@@ -18,7 +18,7 @@ class List extends Component {
 }
 
 const mapStateToProps = state => ({
-  item: state.item,
+  item: state.points,
 });
 
 export default connect(

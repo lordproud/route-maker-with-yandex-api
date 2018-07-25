@@ -2,6 +2,11 @@ import { SEARCH, GET_ITEMS, SEARCH_LOADING } from '../actions/types';
 
 const initialState = {
   items: [],
+  mapParams: {
+    center: [61.0, 69.03],
+    zoom: 14,
+  },
+  pointsOfRoutes: [],
   loading: false,
 };
 
