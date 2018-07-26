@@ -4,13 +4,14 @@ import { getItems } from '../actions/pointsActions';
 
 class List extends Component {
   render() {
-    const { items } = this.props.item;
+    const { pointsOfRoutes } = this.props.item;
+    console.log(pointsOfRoutes);
     return (
       <div className="search-list">
         <ul>
-          {/* {items.length > 0
-            ? items.map(({ id, name }) => <li key={id}>{name}</li>)
-            : ''} */}
+          {pointsOfRoutes.length > 0
+            ? pointsOfRoutes.map(({ id, name }) => <li key={id}>{name}</li>)
+            : ''}
         </ul>
       </div>
     );

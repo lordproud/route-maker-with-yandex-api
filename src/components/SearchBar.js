@@ -1,21 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { search } from '../actions/pointsActions';
+import { search, addPoint } from '../actions/pointsActions';
 import Autocomplete from 'react-autocomplete';
 class SearchBar extends Component {
   state = {
     value: '',
-    findItems: [],
+    currentPoint: {},
   };
 
   handleSubmit = e => {
+    const { items } = this.props.item;
     const { value } = this.state;
-    // if (value) {
-    //   this.props.search(value);
-    // }
+    const points = items.filter((val, i) => val.name === value);
+    const point = points.length === 1 ? points[0] : undefined;
+    if (point) {
+      this.props.addPoint(point);
+    }
     this.setState({
       value: '',
     });
+
     e.preventDefault();
   };
   handleChange = (e, value) => {
@@ -59,5 +63,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { search }
+  { search, addPoint }
 )(SearchBar);

@@ -1,4 +1,4 @@
-import { SEARCH, GET_ITEMS, SEARCH_LOADING } from './types';
+import { SEARCH, GET_ITEMS, SEARCH_LOADING, ADD_POINT } from './types';
 
 const GEOCODE_URL = 'https://geocode-maps.yandex.ru/1.x/?format=json&geocode=';
 
@@ -21,4 +21,9 @@ export const getItems = () => ({
 
 export const setItemsLoading = () => ({
   type: SEARCH_LOADING,
+});
+
+export const addPoint = point => ({
+  type: ADD_POINT,
+  payload: point,
 });
