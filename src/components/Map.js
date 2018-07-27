@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { YMaps, Map } from 'react-yandex-maps';
-import { getItems } from '../actions/pointsActions';
-
+import { getItems, setMapParams } from '../actions/pointsActions';
+import { isEqual } from 'lodash';
 class RouteMaker extends React.Component {
   state = {
     center: [0, 0],
@@ -10,6 +10,7 @@ class RouteMaker extends React.Component {
   };
 
   componentWillMount() {
+    // init map state
     const { mapParams } = this.props.items;
     this.setState({
       center: mapParams.center,
@@ -18,24 +19,66 @@ class RouteMaker extends React.Component {
   }
 
   componentDidMount() {
-    console.log('did mount');
-    // this.updateRoute(points);
+    this.updateRoute(this.props.pointsOfRoutes);
   }
-  updateRoute = points => {
+
+  componentWillReceiveProps(nextProps) {
+    const { pointsOfRoutes: points } = nextProps.items;
     const { ymaps, map } = this;
-    if (!map) return;
-    ymaps.route(points).then(route => {
-      map.geoObjects.add(route);
-    });
+    if (!ymaps) return true;
+    if (isEqual(points, this.props.items.pointsOfRoutes)) {
+      return true;
+    }
+    // fix on one point (route needs 2 points or greater)
+    if (points.length <= 1) {
+      map.geoObjects.removeAll();
+      if (points.length === 1) {
+        const point = points[0];
+        const placemark = new ymaps.Placemark(point.pos, {
+          balloonContent: point.name,
+        });
+        map.geoObjects.add(placemark);
+      }
+    }
+
+    this.updateRoute(points);
+  }
+
+  updateRoute = points => {
+    const { ymaps } = this;
+    if (!ymaps) return;
+    const routePoints = points.map(p => ({
+      type: 'wayPoint',
+      point: p.pos,
+      balloon: p.name,
+      name: p.name,
+    }));
+    // #region make route
+    ymaps
+      .route(routePoints.map(v => v.name), { mapStateAutoApply: true })
+      .then(route => {
+        const { geoObjects } = this.map;
+        geoObjects.removeAll().add(route);
+        const { pointsOfRoutes: points } = this.props.items;
+        route.getWayPoints().each(o => {
+          const index = o.properties.get('index');
+          o.properties.set({
+            balloonContent: points[index].name,
+          });
+        });
+      });
+    // #endregion
   };
   // При изменение карты
-  updateMap = () => {
+  updateMap() {
     const center = this.map.getCenter();
     const zoom = this.map.getZoom();
-  };
+    this.props.setMapParams(center, zoom);
+  }
 
   render() {
     const { state } = this;
+
     return (
       <div className="App-map">
         <YMaps onApiAvaliable={ymaps => (this.ymaps = ymaps)}>
@@ -59,5 +102,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getItems }
+  { getItems, setMapParams }
 )(RouteMaker);

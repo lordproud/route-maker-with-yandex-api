@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getItems } from '../actions/pointsActions';
+import { getItems, deletePoint } from '../actions/pointsActions';
 
 class List extends Component {
+  handleClick = id => f => this.props.deletePoint(id);
   render() {
     const { pointsOfRoutes } = this.props.item;
-    console.log(pointsOfRoutes);
     return (
       <div className="search-list">
         <ul>
           {pointsOfRoutes.length > 0
-            ? pointsOfRoutes.map(({ id, name }) => <li key={id}>{name}</li>)
+            ? pointsOfRoutes.map(({ id, name }) => (
+                <li key={id}>
+                  {name}
+                  <button onClick={this.handleClick(id)}>X</button>
+                </li>
+              ))
             : ''}
         </ul>
       </div>
@@ -24,5 +29,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getItems }
+  { getItems, deletePoint }
 )(List);

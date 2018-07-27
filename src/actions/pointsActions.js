@@ -1,4 +1,11 @@
-import { SEARCH, GET_ITEMS, SEARCH_LOADING, ADD_POINT } from './types';
+import {
+  SEARCH,
+  GET_ITEMS,
+  SEARCH_LOADING,
+  ADD_POINT,
+  DELETE_POINT,
+  SET_MAP_PARAMS,
+} from './types';
 
 const GEOCODE_URL = 'https://geocode-maps.yandex.ru/1.x/?format=json&geocode=';
 
@@ -12,7 +19,6 @@ export const search = queryStr => dispatch => {
         payload: data,
       })
     )
-    .catch(err => console.log(err));
 };
 
 export const getItems = () => ({
@@ -26,4 +32,14 @@ export const setItemsLoading = () => ({
 export const addPoint = point => ({
   type: ADD_POINT,
   payload: point,
+});
+
+export const deletePoint = id => ({
+  type: DELETE_POINT,
+  payload: id,
+});
+
+export const setMapParams = (center, zoom) => ({
+  type: SET_MAP_PARAMS,
+  payload: { center, zoom },
 });
