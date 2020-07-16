@@ -17,8 +17,11 @@ export const search = queryStr => dispatch => {
       dispatch({
         type: SEARCH,
         payload: data,
-      })
-    )
+      }))
+    .catch(err => {
+      console.log(err)
+    })
+    
 };
 
 export const getItems = () => ({
